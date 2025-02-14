@@ -1,9 +1,8 @@
 # deepnote
 
-A Daisy Seed synth thing inspired by THX Deep Note. https://www.thx.com/deepnote/
+A Daisy Seed synth voice using [deepnote](https://github.com/davidirvine/deepnote)
 
-This repo uses Git submodules so when cloning you'll probably want to use the `--recurse-submodules` option. If you forgot or want to update the submodules recursively use `git submodule update --init --recursive`.
-
+This repo uses CMake external pojects to manage external dependencies. These external repos will be cloned and built on your first build.
 
 ## Build Setup
 ```
