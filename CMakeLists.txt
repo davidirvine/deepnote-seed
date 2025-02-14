@@ -10,6 +10,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 # Library Locations
 set(LIBDAISY_DIR ${CMAKE_SOURCE_DIR}/thirdparty/libDaisy)
 set(DAISYSP_DIR ${CMAKE_SOURCE_DIR}/thirdparty/DaisySP)
+set(DEEPNOTE_DIR ${CMAKE_SOURCE_DIR}/thirdparty/DeepNote)
 
 project(Deepnote VERSION 0.1.0 LANGUAGES CXX)
 

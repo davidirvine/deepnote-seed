@@ -20,6 +20,7 @@ target_link_libraries(${TARGET} PRIVATE
 
 include_directories(
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    ${DEEPNOTE_DIR}/src
     ${DAISYSP_DIR}/Source
     ${DAISYSP_DIR}/Source/Utility
     # ${DAISYSP_DIR}/DaisySP-LGPL/Source
@@ -34,10 +35,6 @@ include_directories(
     ${LIBDAISY_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc
     ${LIBDAISY_DIR}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy
 )
-
-add_subdirectory(ranges)
-add_subdirectory(unitshapers)
-add_subdirectory(voice)
 
 include(compiler_linker_options)  
 include(post_build_commands)

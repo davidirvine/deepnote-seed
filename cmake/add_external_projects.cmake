@@ -37,3 +37,21 @@ ExternalProject_add(DaisySP
     PATCH_COMMAND ""
     TEST_COMMAND ""
 )
+
+externalProject_add(Deepnote 
+    GIT_REPOSITORY "https://github.com/davidirvine/deepnote.git"
+    GIT_TAG "origin/develop"
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+    GIT_REMOTE_UPDATE_STRATEGY CHECKOUT
+    GIT_SUBMODULES_RECURSE FALSE
+    
+    SOURCE_DIR ${DEEPNOTE_DIR}
+
+    CONFIGURE_COMMAND ""
+    BUILD_COMMAND ""
+    INSTALL_COMMAND ""
+    UPDATE_COMMAND ""
+    PATCH_COMMAND ""
+    TEST_COMMAND ""
+)
