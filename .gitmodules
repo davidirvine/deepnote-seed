@@ -4,3 +4,6 @@
 [submodule "thirdparty/deepnote"]
 	path = thirdparty/deepnote
 	url = git@github.com:davidirvine/deepnote.git
+[submodule "thirdparty/DaisySP"]
+	path = thirdparty/DaisySP
+	url = git@github.com:electro-smith/DaisySP.git
