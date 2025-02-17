@@ -9,15 +9,15 @@ chord = [
     # A2 110.0   +7 semitones
     # D2 73.42   +0 semitones
     # D1 36.71   +0 semitones
-    {'octave': 6, 'offset': 3}, # High octave to low
-    {'octave': 6, 'offset': 0},
-    {'octave': 5, 'offset': 2},
-    {'octave': 5, 'offset': 0},
-    {'octave': 4, 'offset': 7},
-    {'octave': 3, 'offset': 0},
-    {'octave': 2, 'offset': 7},
-    {'octave': 2, 'offset': 0},
-    {'octave': 1, 'offset': 0}
+    {'octave': 6, 'semitone_offset': 3}, # High octave to low
+    {'octave': 6, 'semitone_offset': 0},
+    {'octave': 5, 'semitone_offset': 2},
+    {'octave': 5, 'semitone_offset': 0},
+    {'octave': 4, 'semitone_offset': 7},
+    {'octave': 3, 'semitone_offset': 0},
+    {'octave': 2, 'semitone_offset': 7},
+    {'octave': 2, 'semitone_offset': 0},
+    {'octave': 1, 'semitone_offset': 0}
 ]
 
 note_numbers = {
@@ -40,7 +40,7 @@ for root_note in note_numbers.values():
     voice_freqs = []
     for voice_note in chord:
         # see: https://en.wikipedia.org/wiki/Piano_key_frequencies
-        key = -8 + (voice_note['octave'] * 12) + voice_note['offset'] + root_note
+        key = -8 + (voice_note['octave'] * 12) + voice_note['semitone_offset'] + root_note
         voice_freqs.append(440 * 2 ** ((key - 49) / 12))
     freq_table[root_note] = voice_freqs
 
