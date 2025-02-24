@@ -12,7 +12,7 @@
 #include "voice/deepnotevoice.hpp"
 #include "ranges/range.hpp"
 #include "daisy_core.h"
-#include <array>
+#include <vector>
 #include <atomic>
 #include <functional>
 #include <cmath>
@@ -26,13 +26,11 @@ const int NUM_DUO_VOICES = 5;
 const int NUM_OSC_TRIO = 3;
 const int NUM_TRIO_VOICES = 4;
 
-using DuoVoiceType = deepnote::DeepnoteVoice<NUM_OSC_DUO>;
-std::array<DuoVoiceType, NUM_DUO_VOICES> duo_voices;
+const int NUM_VOICES = NUM_DUO_VOICES + NUM_TRIO_VOICES;
 
-using TrioVoiceType = deepnote::DeepnoteVoice<NUM_OSC_TRIO>;
-std::array<TrioVoiceType, NUM_TRIO_VOICES> trio_voices;
+ std::vector<deepnote::DeepnoteVoice> voices(NUM_VOICES);
 
-const int FREQ_TABLE_WIDTH = NUM_TRIO_VOICES + NUM_DUO_VOICES;
+const int FREQ_TABLE_WIDTH = NUM_VOICES;
 const int FREQ_TABLE_HEIGHT = 13;
 
 // Generate a random frequency with in a range of frequencies
@@ -117,33 +115,20 @@ void AudioCallback(daisy::AudioHandle::InputBuffer in, daisy::AudioHandle::Outpu
 	for (size_t bufferIndex = 0; bufferIndex < buffer_size; bufferIndex++)
 	{
 		auto output{0.f};
-		auto index{0u};
-		for (auto &voice : trio_voices)
-		{
-			voice.set_detune(detune);
-			if (flag_target_changed)
-			{
-				voice.set_target_frequency(target_freq_table.get(nt::FrequencyTableIndex(value_target), nt::VoiceIndex(index++)));
-			}
-			if (flag_toggle_changed)
-			{
-				voice.set_start_frequency(target_freq_table.get(nt::FrequencyTableIndex(0), nt::VoiceIndex(index++)));
-			}
-			output += voice.process(animation_multiplier, cp1, cp2, trace_functor);
-		}
+		auto voice_index{0u};
 
-		for (auto &voice : duo_voices)
+		for (auto &voice : voices) 
 		{
-			voice.set_detune(detune);
+			voice.detune_oscillators(detune);
 			if (flag_target_changed)
 			{
-				voice.set_target_frequency(target_freq_table.get(nt::FrequencyTableIndex(value_target), nt::VoiceIndex(index++)));
+				voice.set_target_frequency(target_freq_table.get(nt::FrequencyTableIndex(value_target), nt::VoiceIndex(voice_index++)));
 			}
 			if (flag_toggle_changed)
 			{
-				voice.set_start_frequency(target_freq_table.get(nt::FrequencyTableIndex(0), nt::VoiceIndex(index++)));
+				voice.set_start_frequency(target_freq_table.get(nt::FrequencyTableIndex(0), nt::VoiceIndex(voice_index++)));
 			}
-			output += voice.process(animation_multiplier, cp1, cp2, trace_functor);
+			output += process_voice(voice, animation_multiplier, cp1, cp2, trace_functor).get();
 		}
 
 		output *= value_volume;
@@ -184,25 +169,21 @@ int main(void)
 		daisy::Switch::Polarity::POLARITY_NORMAL,
 		daisy::GPIO::Pull::PULLUP);
 
-	// indexes used for target_freq_table lookup
-	auto voice_index{0};
-	const auto start_table_index{0};
-
 	// initialize the voices
-	for (auto &voice : trio_voices)
-	{
-		voice.init(
-			target_freq_table.get(nt::FrequencyTableIndex(start_table_index), nt::VoiceIndex(voice_index++)),
-			nt::SampleRate(sample_rate),
-			random_animation_freq());
-	}
+	// indexes used for target_freq_table lookup
+	auto voice_index{0u};
+	const auto start_table_index{0u};
 
-	for (auto &voice : duo_voices)
+	for (auto &voice : voices) 
 	{
-		voice.init(
-			target_freq_table.get(nt::FrequencyTableIndex(start_table_index), nt::VoiceIndex(voice_index++)),
+		init_voice(
+			voice,
+			voice_index > NUM_DUO_VOICES ? NUM_OSC_TRIO : NUM_OSC_DUO,
+			target_freq_table.get(nt::FrequencyTableIndex(start_table_index), nt::VoiceIndex(voice_index)),
 			nt::SampleRate(sample_rate),
 			random_animation_freq());
+
+		voice_index++;
 	}
 
 	//	Start ADC and real-time audio processing
