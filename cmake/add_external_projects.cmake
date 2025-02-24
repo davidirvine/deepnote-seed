@@ -15,8 +15,6 @@ ExternalProject_add(libDaisy
     CONFIGURE_COMMAND ""
     BUILD_COMMAND cd ${LIBDAISY_DIR} && ${MAKE_CMD}
     INSTALL_COMMAND ""
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ""
     TEST_COMMAND ""
 )
 
@@ -33,8 +31,6 @@ ExternalProject_add(DaisySP
     CONFIGURE_COMMAND ""
     BUILD_COMMAND cd ${DAISYSP_DIR} && ${MAKE_CMD}
     INSTALL_COMMAND ""
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ""
     TEST_COMMAND ""
 )
 
@@ -51,7 +47,5 @@ externalProject_add(Deepnote
     CONFIGURE_COMMAND ""
     BUILD_COMMAND ""
     INSTALL_COMMAND ""
-    UPDATE_COMMAND ""
-    PATCH_COMMAND ""
     TEST_COMMAND ""
 )
